@@ -50,21 +50,6 @@ export class Initializer {
         });
     }
 
-    setCanvasSize() {
-        this.canvasContainerElement.style.width = `${config.CANVAS_SIZE  }px`;
-        this.canvasContainerElement.style.height = `${config.CANVAS_SIZE  }px`;
-        this.canvasTerrain.width = config.CANVAS_SIZE;
-        this.canvasTerrain.height = config.CANVAS_SIZE;
-        this.canvasPlayers.width = config.CANVAS_SIZE;
-        this.canvasPlayers.height = config.CANVAS_SIZE;
-    }
-
-    toggleVisibility() {
-        this.roomsElement.classList.toggle('no-display');
-        this.canvasWrapperElement.classList.toggle('no-display');
-        this.leaveRoomElement.classList.toggle('no-display');
-    }
-
     async onRoomJoin(roomName) {
         this.setCanvasSize();
         this.toggleVisibility();

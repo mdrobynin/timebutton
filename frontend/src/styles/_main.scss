@@ -1,0 +1,28 @@
+@import './variables';
+
+.wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: $lightgray;
+}
+
+.header {
+    flex: 0 0 72px;
+    width: 100%;
+    display: flex;
+    @include box-shadow;
+    background-color: $white;
+    align-items: center;
+    padding: 24px;
+    
+    &__title {
+        font-size: 24px;
+        color: $black;
+        font-weight: 600;
+    }
+}
+
+.body {
+    flex: 1 0;
+}

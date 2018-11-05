@@ -1,27 +1,42 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Game</title>
+    <title>Button</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
+
 <body>
 
-<div class="wrapper">
-    <div id="rooms">
-        <button id="create-room">Create room</button>
-        <div id="rooms-container"></div>
-    </div>
-    <div id="canvas-wrapper" class="no-display">
-        <div id="canvas-container">
-            <canvas id="canvas-terrain"></canvas>
-            <canvas id="canvas-players"></canvas>
+    <div class="wrapper">
+        <div class="header">
+            <div class="header__title">Button</div>
+        </div>
+        <div class="body">
+            
+            <div class="login-form" id="login-form">
+                <div class="login-form__card">
+                    <div class="login-form__card-title">
+                        Please enter your name
+                    </div>
+                    <div class="login-form__card-fields">
+                        <input type="text" class="login-form__card-input" id="login-input">
+                    </div>
+                    <div class="login-form__card-actions">
+                        <button class="login-form__card-button">
+                            GO!
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            
         </div>
     </div>
-    <button id="leave-room" class="no-display">Leave room</button>
-</div>
 
 </body>
+
 </html>
