@@ -1,0 +1,98 @@
+@import './reset.css';
+
+@mixin buttonStyle {
+  height: 30px;
+  font-size: 20px;
+  background: green;
+  color: white;
+}
+
+.wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("../assets/background.png") no-repeat;
+  background-size: cover;
+  flex-direction: column;
+}
+
+#rooms {
+  width: 600px;
+  height: 400px;
+  background: forestgreen;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+
+  #create-room {
+    @include buttonStyle;
+    width: 200px;
+  }
+
+  #rooms-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+
+    .room {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: 10px;
+      padding: 10px 20px;
+      background: darkgreen;
+      margin: 10px 0;
+      width: 100%;
+
+      &__name {
+        color: white;
+        font-size: 24px;
+      }
+
+      &__join-button {
+        @include buttonStyle;
+        width: 100px;
+      }
+    }
+  }
+}
+
+#leave-room {
+  @include buttonStyle;
+  margin: 5px;
+}
+
+#canvas-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  #canvas-container {
+    position: relative;
+
+    #canvas-terrain {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    #canvas-players {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+}
+
+#canvas {
+  border: 1px solid lightgray;
+}
+
+.no-display {
+  display: none !important;
+}
