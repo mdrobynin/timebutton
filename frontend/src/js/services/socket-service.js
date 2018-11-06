@@ -3,23 +3,18 @@ import { config } from '../config/config';
 import { constants } from '../config/constants';
 
 export class SocketService {
-    joinRoom(roomName) {
+    
+    join(playerName) {
         this.socket = io(config.host);
-        this.roomName = roomName;
-        this.socket.emit(constants.SOCKET_JOIN_ROOM_ACTION_NAME, roomName);
-        this.socket.on(constants.SOCKET_GET_CONNECTION_ID_ACTION_NAME, id => this.playerId = id);
+        
+        this.socket.on(constants.SOCKET_GET_CONNECTION_ID_ACTION_NAME, id => {
+            this.playerId = id;
+            this.socket.emit(constants.SOCKET_JOIN_ACTION_NAME, { playerName, playerId: id });
+        });
     }
 
-    reconnectAfterDeath() {
-        this.socket.emit(constants.SOCKET_JOIN_ROOM_ACTION_NAME, this.roomName);
-        this.socket.on(constants.SOCKET_GET_CONNECTION_ID_ACTION_NAME, id => this.playerId = id);
-    }
-
-    leaveRoom(callback) {
-        if (this.roomName) {
-            this.socket.emit(constants.SOCKET_LEAVE_ROOM_ACTION_NAME, this.roomName, callback);
-        }
-        this.roomName = undefined;
+    leave() {
+        this.socket.emit(constants.SOCKET_LEAVE_ACTION_NAME);
     }
 
     emit(event) {
@@ -27,8 +22,8 @@ export class SocketService {
     }
 
     subscribeToSocketEvents(callback) {
-        this.socket.on(constants.SOCKET_STATE_RECEIVE_ACTION_NAME, eventJSON => {
-            callback(eventJSON);
+        this.socket.on(constants.SOCKET_STATE_RECEIVE_ACTION_NAME, (event) => {
+            callback(event);
         });
     }
 }

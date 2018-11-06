@@ -9,6 +9,7 @@ class UserEventsObservable {
 
     fireEvent(event, thisObj) {
         const scope = thisObj || global;
+
         this.observers.forEach(observer => {
             observer.call(scope, event);
         });
