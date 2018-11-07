@@ -1,9 +1,10 @@
-import { Initializer } from './utils/initializer';
+import { Starter } from './utils/starter';
 
-const initializer = new Initializer();
+const starter = new Starter();
 
 window.onload = () => {
-    initializer.getConfig().then(() => {
-        initializer.join();
-    })
+    starter.getConfig()
+        .then(() => {
+            starter.connect();
+        });
 };

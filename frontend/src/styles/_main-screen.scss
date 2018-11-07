@@ -1,0 +1,91 @@
+@import './variables';
+
+.main-screen {
+    display: flex;
+    height: 100%;
+    
+    &__left-aside {
+        flex: 0 0 300px;
+        display: flex;
+        flex-direction: column;
+
+        &-title {
+            font-size: 18px;
+            color: $black;
+            margin: 24px;
+            font-weight: 600;
+            justify-content: center;
+            display: flex;
+        }
+        
+        &-list {
+            display: flex;
+            flex-direction: column;
+            padding: 0 24px;
+        }
+    }
+    
+    &__body {
+        flex: 1 0;
+        padding-top: 24px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        
+        &-players {
+            display: flex;
+            flex-direction: column;
+            flex: 1 0;
+            align-items: center;
+        }
+        
+        &-actions {
+            flex: 0 0 150px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        &-ready-button {
+            height: 80px;
+            width: 300px;
+            margin: 24px;
+            border-radius: 8px;
+            border: none;
+            background-color: rgba(green, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: $white;
+            font-size: 40px;
+            outline: none;
+            user-select: none;
+            font-weight: 600;
+            
+            &:hover {
+                cursor: pointer;
+                background-color: rgba(green, 0.5);
+            }
+        }
+    }
+    
+    &__right-aside {
+        flex: 0 0 300px;
+        display: flex;
+        flex-direction: column;
+
+        &-title {
+            font-size: 18px;
+            color: $black;
+            margin: 24px;
+            font-weight: 600;
+            justify-content: center;
+            display: flex;
+        }
+        
+        &-list {
+            display: flex;
+            flex-direction: column;
+            padding: 0 24px;
+        }
+    }
+}

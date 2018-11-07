@@ -1,0 +1,23 @@
+@import './variables';
+
+.player-list-item {
+    margin: 8px;
+    border: 1px solid $orange;
+    border-radius: 4px;
+    padding: 16px;
+    min-width: 300px;
+    display: flex;
+    justify-content: center;
+    background: rgba(red, 0.05);
+    
+    &_ready {
+        border-color: green;
+        background: rgba(green, 0.1);
+    }
+    
+    &__name {
+        font-size: 16px;
+        color: $orange;
+        font-weight: 600;
+    }
+}
