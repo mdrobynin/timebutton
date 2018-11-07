@@ -1,8 +1,6 @@
 import { config } from '../config/config';
 import { constants } from '../config/constants';
-import { UserEventsObservable } from "../logic/user-events-observable";
 import { SocketService } from "../services/socket-service";
-import { Controller } from "../controllers/controller";
 
 export class Starter {
     constructor() {
@@ -14,13 +12,18 @@ export class Starter {
         const loginButton = document.getElementById('login-button');
         const loginInput = document.getElementById('login-input');
         const readyButton = document.getElementById('ready-button');
+        const resetButton = document.getElementById('reset-button');
         
         window.addEventListener('beforeunload', () => {
             this.socketService.leave();
         });
         
         readyButton.addEventListener('click', () => {
-            this.socketService.emit({ playerId: this.socketService.playerId });
+            const player = this.playersArray.find(p => p.id === this.socketService.playerId);
+
+            if (player && !player.buttonPressed) {
+                this.socketService.emit({ playerId: this.socketService.playerId });
+            }
         });
         
         loginButton.addEventListener('click', () => {
@@ -28,6 +31,10 @@ export class Starter {
                 this.userIsLoggingInHandler();
                 this.socketService.join(loginInput.value);
             }
+        });
+        
+        resetButton.addEventListener('click', () => {
+            this.socketService.reset();
         });
     }
 
@@ -46,31 +53,65 @@ export class Starter {
     }
 
     userLoggedInHandler(playersArray) {
-        const loginForm = document.getElementById('login-form');
-        const playersList = document.getElementById('players-list');
+        this.playersArray = playersArray;
+
+        if (this.playersArray.map(p => p.id).includes(this.socketService.playerId)) {
+            const loginForm = document.getElementById('login-form');
+            const mainScreen = document.getElementById('main-screen');
+
+            loginForm.classList.add('login-form_hidden');
+            mainScreen.classList.add('main-screen_visible');
+
+            this._renderPlayersList();
+            this._checkUserCanClickReady();
+        }
+    }
+
+    connect() {
+        this.socketService = new SocketService();
         
-        loginForm.classList.add('login-form_hidden');
+        this.socketService.subscribeToStateChange(this.userLoggedInHandler);
+    }
+    
+    _renderPlayersList(p) {
+        const playersList = document.getElementById('players-list');
 
         playersList.innerHTML = '';
-        playersArray.forEach((player) => {
+        this.playersArray.forEach((player) => {
             const playerListElement = document.createElement('div');
             const playerListElementName = document.createElement('div');
+            
             playerListElement.classList.add('player-list-item');
+            
             if (player.buttonPressed) {
                 playerListElement.classList.add('player-list-item_ready');
             }
+            
+            if (player.order) {
+                const playerListElementOrder = document.createElement('div');
+                playerListElementOrder.classList.add('player-list-item__order');
+                playerListElementOrder.innerText = player.order;
+                playerListElement.appendChild(playerListElementOrder);
+            }
+            
             playerListElementName.classList.add('player-list-item__name');
             playerListElement.appendChild(playerListElementName);
             playerListElementName.innerText = player.name;
             playersList.appendChild(playerListElement);
         });
     }
+    
+    _checkUserCanClickReady() {
+        const player = this.playersArray.find(p => p.id === this.socketService.playerId);
 
-    connect() {
-        this.socketService = new SocketService();
-        this.observable = new UserEventsObservable(this.socketService);
-        this.controller = new Controller(this.observable, this.socketService);
-        
-        this.socketService.subscribeToUserLoggedIn(this.userLoggedInHandler);
+        if (player) {
+            const readyButton = document.getElementById('ready-button');
+
+            if (player.buttonPressed) {
+                readyButton.classList.add('main-screen__body-ready-button_disabled');
+            } else {
+                readyButton.classList.remove('main-screen__body-ready-button_disabled');
+            }
+        }
     }
 }

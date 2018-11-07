@@ -14,12 +14,31 @@
     @include box-shadow;
     background-color: $white;
     align-items: center;
+    justify-content: space-between;
     padding: 24px;
     
     &__title {
         font-size: 24px;
         color: $black;
         font-weight: 600;
+    }
+    
+    &__reset {
+        background-color: rgba(red, 0.6);
+        font-weight: 600;
+        color: $white;
+        margin-right: 40px;
+        border-radius: 4px;
+        font-size: 16px;
+        padding: 8px 16px;
+        border: none;
+        outline: none;
+        @include box-shadow;
+
+        &:hover {
+            cursor: pointer;
+            background-color: rgba(red, 0.5);
+        }
     }
 }
 

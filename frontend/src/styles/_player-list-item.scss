@@ -9,6 +9,7 @@
     display: flex;
     justify-content: center;
     background: rgba(red, 0.05);
+    position: relative;
     
     &_ready {
         border-color: green;
@@ -19,5 +20,18 @@
         font-size: 16px;
         color: $orange;
         font-weight: 600;
+    }
+    
+    &__order {
+        font-size: 30px;
+        color: red;
+        font-weight: 900;
+        position: absolute;
+        right: -40px;
+        top: 10px;
+    }
+    
+    &_ready &__name {
+        color: green;
     }
 }

@@ -3,8 +3,9 @@ const {
     SOCKET_JOIN_ACTION_NAME,
     SOCKET_LEAVE_ACTION_NAME,
     SOCKET_USER_ACTION_NAME,
-    SOCKET_USER_LOGGED_IN_ACTION_NAME,
-    SOCKET_ERROR_ACTION_NAME
+    SOCKET_STATE_RECEIVE_ACTION_NAME,
+    SOCKET_ERROR_ACTION_NAME,
+    SOCKET_RESET_ACTION_NAME
 } = require('../config/constants');
 const PlayerState = require('../models/player-state');
 
@@ -39,18 +40,35 @@ class ConnectionHandler {
             });
             
             socket.on(SOCKET_USER_ACTION_NAME, (player) => {
-                console.log(player);
+                this._playerReadyHandler(player);
+            });
+            
+            socket.on(SOCKET_RESET_ACTION_NAME, () => {
+                this._resetGame();
             });
         });
+    }
+    
+    _playerReadyHandler(player) {
+        if (player) {
+           const targetPlayer = this.players.find(p => p.id === player.playerId);
+
+           if (targetPlayer) {
+                const maxOrder = this.players.map(p => p.order).sort((a, b) => a - b)[this.players.length - 1];
+                
+                targetPlayer.order = maxOrder ? maxOrder + 1 : 1;
+                targetPlayer.buttonPressed = true;
+
+                this._emitCurrentState();
+           }
+        }
     }
     
     _playerLoggedOutHandler(player) {
         if (player) {
             this.players = this.players.filter(p => p.id !== player.playerId);
 
-            this.connections.forEach((socket) => {
-                socket.emit(SOCKET_USER_LOGGED_IN_ACTION_NAME, this.players);
-            });
+            this._emitCurrentState();
         }
     }
     
@@ -63,11 +81,24 @@ class ConnectionHandler {
             } else {
                 this.players.push(new PlayerState(playerId, playerName));
         
-                this.connections.forEach((socket) => {
-                    socket.emit(SOCKET_USER_LOGGED_IN_ACTION_NAME, this.players);
-                });
+                this._emitCurrentState();
             }
         }
+    }
+    
+    _resetGame() {
+        this.players.forEach(p => {
+            p.buttonPressed = false;
+            p.order = null;
+        });
+
+        this._emitCurrentState();
+    }
+    
+    _emitCurrentState() {
+        this.connections.forEach((socket) => {
+            socket.emit(SOCKET_STATE_RECEIVE_ACTION_NAME, this.players);
+        });
     }
     
     _errorHandler(socket, error) {

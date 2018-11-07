@@ -3,6 +3,7 @@ class PlayerState {
         this.id = id;
         this.name = name;
         this.buttonPressed = false;
+        this.order = null;
     }
 }
 

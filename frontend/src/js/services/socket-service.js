@@ -5,20 +5,20 @@ import { constants } from '../config/constants';
 export class SocketService {
     
     constructor() {
-        this.loggedInCallbacks = [];
+        this.callbacks = [];
         this.socket = io(config.host);
         
         this.socket.on(constants.SOCKET_GET_CONNECTION_ID_ACTION_NAME, id => {
             this.playerId = id;
         });
         
-        this.socket.on(constants.SOCKET_USER_LOGGED_IN_ACTION_NAME, (event) => {
-            this.loggedInCallbacks.forEach(c => c(event));
+        this.socket.on(constants.SOCKET_STATE_RECEIVE_ACTION_NAME, (event) => {
+            this.callbacks.forEach(c => c(event));
         });
     }
     
-    subscribeToUserLoggedIn(callback) {
-        this.loggedInCallbacks.push(callback);
+    subscribeToStateChange(callback) {
+        this.callbacks.push(callback);
     }
     
     join(playerName) {
@@ -32,10 +32,8 @@ export class SocketService {
     emit(event) {
         this.socket.emit(constants.SOCKET_USER_ACTION_NAME, event);
     }
-
-    subscribeToSocketEvents(callback) {
-        this.socket.on(constants.SOCKET_STATE_RECEIVE_ACTION_NAME, (event) => {
-            callback(event);
-        });
+    
+    reset() {
+        this.socket.emit(constants.SOCKET_RESET_ACTION_NAME);
     }
 }
